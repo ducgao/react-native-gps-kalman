@@ -11,6 +11,6 @@
 
 @interface RCT_EXTERN_MODULE(GpsKalman, NSObject)
 RCT_EXTERN_METHOD(startSession)
-RCT_EXTERN_METHOD(process:(NSNumber*)latitude longitude:(NSNumber*)longitude altitude:(NSNumber*)altitude timeStamp:(NSNumber*)timeStamp resolver:(RCTPromiseResolveBlock)resolver reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(process:(NSNumber* _Nonnull)latitude longitude:(NSNumber* _Nonnull)longitude altitude:(NSNumber* _Nonnull)altitude timeStamp:(NSNumber* _Nonnull)timeStamp resolver:(RCTPromiseResolveBlock)resolver reject:(RCTPromiseRejectBlock)reject)
 
 @end

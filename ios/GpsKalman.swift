@@ -30,9 +30,10 @@ class GpsKalman: NSObject {
             if (self.hcKalmanFilter == nil) {
                 self.hcKalmanFilter = HCKalmanAlgorithm(initialLocation: location)
             } else {
-                self.hcKalmanFilter.resetKalman(newStartLocation: location)
+                self.hcKalmanFilter!.resetKalman(newStartLocation: location)
             }
             
+            resetKalmanFilter = false
             return location
         }
         
@@ -41,8 +42,8 @@ class GpsKalman: NSObject {
     }
     
     @objc
-    func process(_ latitude: Double, longitude: Double, altitude: Double, timeStamp: NSNumber, resolver: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
-        let result = self.process(latitude, longitude: longitude, altitude: altitude, timeStamp: timeStamp)
+    func process(_ latitude: NSNumber, longitude: NSNumber, altitude: NSNumber, timeStamp: NSNumber, resolver: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        let result = self.process(latitude.doubleValue, longitude: longitude.doubleValue, altitude: altitude.doubleValue, timeStamp: timeStamp)
         
         if (result == nil) {
             reject("ERROR", "Can not correct the point", nil)
