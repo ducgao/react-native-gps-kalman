@@ -27,7 +27,12 @@ class GpsKalman: NSObject {
         let location = CLLocation(coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), altitude: CLLocationDistance(0), horizontalAccuracy: CLLocationAccuracy(0), verticalAccuracy: CLLocationAccuracy(0), timestamp: date)
         
         if (resetKalmanFilter) {
-            self.hcKalmanFilter = HCKalmanAlgorithm(initialLocation: location)
+            if (self.hcKalmanFilter == nil) {
+                self.hcKalmanFilter = HCKalmanAlgorithm(initialLocation: location)
+            } else {
+                self.hcKalmanFilter.resetKalman(newStartLocation: location)
+            }
+            
             return location
         }
         
