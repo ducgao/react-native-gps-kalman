@@ -1,8 +1,7 @@
-
 {
-  "name": "react-native-react-native-gps-kalman",
-  "version": "1.0.0",
-  "description": "",
+  "name": "react-native-gps-kalman",
+  "version": "1.0.1",
+  "description": "## Getting started",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,9 +9,19 @@
   "keywords": [
     "react-native"
   ],
-  "author": "",
-  "license": "",
+  "author": "ducgao",
+  "license": "MIT",
   "peerDependencies": {
     "react-native": "^0.41.2"
-  }
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ducgao/react-native-gps-kalman.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ducgao/react-native-gps-kalman/issues"
+  },
+  "homepage": "https://github.com/ducgao/react-native-gps-kalman#readme"
 }
