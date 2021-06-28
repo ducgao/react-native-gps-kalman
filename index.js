@@ -1,6 +1,6 @@
 
 import { NativeModules } from 'react-native';
 
-const { RNReactNativeGpsKalman } = NativeModules;
+const { GpsKalman } = NativeModules;
 
-export default RNReactNativeGpsKalman;
+export default GpsKalman;
