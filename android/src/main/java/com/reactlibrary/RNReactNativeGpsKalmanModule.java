@@ -51,18 +51,21 @@ public class RNReactNativeGpsKalmanModule extends ReactContextBaseJavaModule {
         geoHashRTFilter.filter(loc);
         List<Location> latestData = geoHashRTFilter.getGeoFilteredTrack();
 
-        if (latestData.isEmpty()) {
-            promise.reject("ERROR", "Can not correct the point");
-        } else {
-            Location lastLoc = latestData.get(latestData.size() - 1);
-            WritableMap objectResolve = Arguments.createMap();
+        Location locToResolve;
 
-            objectResolve.putDouble("latitude", lastLoc.getLatitude());
-            objectResolve.putDouble("longitude", lastLoc.getLongitude());
-            objectResolve.putDouble("altitude", lastLoc.getAltitude());
-            objectResolve.putDouble("time", timeStamp);
-            
-            promise.resolve(objectResolve);
+        if (latestData.isEmpty()) {
+            locToResolve = loc;
+        } else {
+            locToResolve = latestData.get(latestData.size() - 1);
         }
+
+        WritableMap objectResolve = Arguments.createMap();
+
+        objectResolve.putDouble("latitude", locToResolve.getLatitude());
+        objectResolve.putDouble("longitude", locToResolve.getLongitude());
+        objectResolve.putDouble("altitude", locToResolve.getAltitude());
+        objectResolve.putDouble("time", timeStamp);
+
+        promise.resolve(objectResolve);
     }
 }
