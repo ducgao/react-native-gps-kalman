@@ -3,11 +3,11 @@
 
 ## Getting started
 
+#### with npm
 `$ npm install react-native-react-native-gps-kalman --save`
 
-### Mostly automatic installation
-
-`$ react-native link react-native-react-native-gps-kalman`
+#### with yarn
+`$ yarn add react-native-react-native-gps-kalman`
 
 ### Manual installation
 
@@ -37,9 +37,17 @@
 
 ## Usage
 ```javascript
-import RNReactNativeGpsKalman from 'react-native-react-native-gps-kalman';
+import GpsKalman from 'react-native-gps-kalman';
 
-// TODO: What to do with the module?
-RNReactNativeGpsKalman;
+//begin session
+GpsKalman.startSession()
+
+//process every new location points
+const OnLocationChanged = (loc) => {
+  const filteredLoc = await GPSKalman.process(loc.latitude, loc.longitude, loc.altitude, loc.timestamp);
+  console.log(filteredLoc)
+}
+
+
 ```
   
