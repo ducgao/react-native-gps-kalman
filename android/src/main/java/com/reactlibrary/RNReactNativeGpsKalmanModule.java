@@ -104,21 +104,12 @@ public class RNReactNativeGpsKalmanModule extends ReactContextBaseJavaModule {
         Intent intent = new Intent(reactContext.getApplicationContext(), GpsKalmanService.class);
         reactContext.stopService(intent);
 
-        WritableArray resolveArray = Arguments.createArray();
+        resolveCurrentBackgroundLocations(promise)
+    }
 
-        for (int i = 0; i < backgroundLocations.size(); i++) {
-            Location loc = backgroundLocations.get(i);
-            WritableMap resolveMap = Arguments.createMap();
-
-            resolveMap.putDouble("latitude", loc.getLatitude());
-            resolveMap.putDouble("longitude", loc.getLongitude());
-            resolveMap.putDouble("altitude", loc.getAltitude());
-            resolveMap.putDouble("time", loc.getTime());
-
-            resolveArray.pushMap(resolveMap);
-        }
-
-        promise.resolve(resolveArray);
+    @ReactMethod
+    void getCurrentBackgroundLocations(Promise promise) {
+        resolveCurrentBackgroundLocations(promise)
     }
 
     @ReactMethod
@@ -157,5 +148,23 @@ public class RNReactNativeGpsKalmanModule extends ReactContextBaseJavaModule {
         objectResolve.putDouble("time", timeStamp);
 
         promise.resolve(objectResolve);
+    }
+
+    private void resolveCurrentBackgroundLocations(Promise promise) {
+        WritableArray resolveArray = Arguments.createArray();
+
+        for (int i = 0; i < backgroundLocations.size(); i++) {
+            Location loc = backgroundLocations.get(i);
+            WritableMap resolveMap = Arguments.createMap();
+
+            resolveMap.putDouble("latitude", loc.getLatitude());
+            resolveMap.putDouble("longitude", loc.getLongitude());
+            resolveMap.putDouble("altitude", loc.getAltitude());
+            resolveMap.putDouble("time", loc.getTime());
+
+            resolveArray.pushMap(resolveMap);
+        }
+
+        promise.resolve(resolveArray);
     }
 }
