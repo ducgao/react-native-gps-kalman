@@ -127,7 +127,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho '#import \"React/RCTBridgeModule.h\"' >> Target\\ Support\\ Files/RNReactNativeGpsKalman/RNReactNativeGpsKalman-umbrella.h\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho '#import \"React/RCTBridgeModule.h\"' >> Target\\ Support\\ Files/RNReactNativeGpsKalman/RNReactNativeGpsKalman-umbrella.h\necho '#import \"React/RCTEventEmitter.h\"' >> Target\\ Support\\ Files/RNReactNativeGpsKalman/RNReactNativeGpsKalman-umbrella.h\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

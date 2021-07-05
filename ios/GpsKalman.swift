@@ -11,10 +11,13 @@ import HCKalmanFilter
 import MapKit
 
 @objc(GpsKalman)
-class GpsKalman: NSObject {
+class GpsKalman: RCTEventEmitter, CLLocationManagerDelegate {
 
     var resetKalmanFilter: Bool = false
     var hcKalmanFilter: HCKalmanAlgorithm?
+    
+    var locationManager: CLLocationManager?
+    var backgroundLocations: NSMutableArray?
 
     @objc
     func startSession() {
@@ -53,6 +56,73 @@ class GpsKalman: NSObject {
                 "longitude": result!.coordinate.longitude,
                 "altitude": result!.altitude,
                 "time": timeStamp,
+            ])
+        }
+    }
+        
+    @objc
+    func startBackgroundSession() {
+        resetKalmanFilter = true
+        
+        if (backgroundLocations == nil) {
+            backgroundLocations = NSMutableArray()
+        }
+        
+        backgroundLocations?.removeAllObjects()
+        
+        if (locationManager == nil) {
+            locationManager = CLLocationManager()
+            locationManager?.delegate = self
+            locationManager?.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager?.distanceFilter = 0.1
+            
+            locationManager?.requestAlwaysAuthorization()
+        }
+        
+        locationManager?.startUpdatingLocation()
+    }
+    
+    @objc
+    func getCurrentBackgroundLocations(_ resolver: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        resolver(backgroundLocations)
+    }
+    
+    @objc
+    func stopBackgroundSession(_ resolver: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) {
+        locationManager?.stopUpdatingLocation()
+        resolver(backgroundLocations)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        if (locations.isEmpty || locations.first == nil) {
+            return
+        }
+        
+        if (resetKalmanFilter) {
+            if (self.hcKalmanFilter == nil) {
+                self.hcKalmanFilter = HCKalmanAlgorithm(initialLocation: locations.first!)
+            } else {
+                self.hcKalmanFilter!.resetKalman(newStartLocation: locations.first!)
+            }
+            
+            resetKalmanFilter = false
+            return
+        }
+        
+        let filteredLoc = self.hcKalmanFilter?.processState(currentLocation: locations.first!)
+        if (filteredLoc != nil) {
+            backgroundLocations?.add([
+                "latitude": filteredLoc!.coordinate.latitude,
+                "longitude": filteredLoc!.coordinate.longitude,
+                "altitude": filteredLoc!.altitude,
+                "time": filteredLoc!.timestamp,
+            ])
+            self.sendEvent(withName: "GPS_KALMAN_LOCATION_UPDATED", body: [
+                "latitude": filteredLoc!.coordinate.latitude,
+                "longitude": filteredLoc!.coordinate.longitude,
+                "altitude": filteredLoc!.altitude,
+                "time": filteredLoc!.timestamp,
             ])
         }
     }
